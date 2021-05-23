@@ -1,0 +1,29 @@
+====================== CSV Format =====================
+
+spark.read.format("csv").load("C:/retail_db/categories")
+
+spark.read.format("csv").load("C:/retail_db/categories").toDF("sno","amount","game")
+
+spark.read.format("csv").options(Map("header" -> "true","inferSchema" -> "true")).load("C:/retail_db/categories")
+
+======= Specifying the Schema ===========
+
+import org.apache.spark.sql._
+import org.apache.spark.sql.types._
+
+val mySchema=StructType(Array(StructField("cat_id",IntegerType,true),StructField("cat_dept_id",IntegerType,true),StructField("game_name",StringType,true)))
+
+val dt=spark.read.format("csv").option("header","true").schema(mySchema).load("C:/retail_db/categories")
+
+============== Writing Data ( Must specify the header true to have header and should have mode(SaveMode.Overwrite/Append) specified==========
+
+dt.write.format("csv").save("C:/retail_db/categories_output/")
+
+dt.write.option("header","true").mode(SaveMode.Overwrite).csv("C:/retail_db/categories_output/")
+
+
+
+===== Do the compression while saving =================
+
+dt.write.options(Map("header"->"true","compression"->"snappy")).mode(SaveMode.Overwrite).save("C:/retail_db/categories_output/")
+
