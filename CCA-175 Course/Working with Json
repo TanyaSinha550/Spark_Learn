@@ -1,0 +1,23 @@
+====== Single Line json ===================
+val ty=spark.read.json("C:/retail_db/sample_data.json")
+
+
+========== Multi line json =============
+
+spark.read.option("multiline","true").json("C:/retail_db/multi_line_data.json")
+
+======Write to local as json file =============
+
+ty.write.format("json").save("C:/retail_db/customers-json")
+
+
+====== Doing Compression ===============
+
+ty.write.option("compression","gzip").format("json").save("C:/retail_db/customers-json-gzip")
+
+===================================================
+
+Note --- We can read compressed file same as original file
+spark.read.json("C:/retail_db/customers-json-gzip")
+
+
